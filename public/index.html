@@ -1,8 +1,27 @@
 <html>
 <head>
     <title>Get tweets about your city</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <script type="text/javascript" src="script.js"></script>
+<div id="result"></div>
+<script type="text/html" id="template">
+    <ul class="container">
+        {{ for (var i = 0; i < data.length; i++) { }}
+            <li class="item">
+                <div class="header-post">Posted by: {{=data[i].user_name}}</div>
+                <div>{{=data[i].text}}</div>
+                <div class="datetime-post">{{=data[i].post_created_at}}</div>
+            </li>
+        {{ } }}
+    </ul>
+</script>
+
+<script type="text/javascript" src="micro-mustache.js"></script>
+<script type="text/javascript" src="codebird.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript">
+    GetCityTweets({selectorToInsert: "#result", templateSelector: "template"});
+</script>
 </body>
 </html>
