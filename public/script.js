@@ -42,15 +42,18 @@ function GetCityTweets(paramsObject) {
             "search_tweets",
             "q=%23" + cityName,
             function (reply) {
+                var post_text = "";
                 var response = reply.statuses.map(function(value, index){
+                    post_text = value.text.
+                        replace(/#([\S]{1,})[\W#]/ig, '<a href="https://twitter.com/search?q=%23$1">#$1</a> ');
                     return {
                         'post_created_at': (new Date(value.created_at)).toDateString(),
-                        'text': value.text,
+                        'text': post_text,
                         'user_name': value.user && value.user.name,
                         'profile_image_url': value.user && value.user.profile_image_url,
                     }
                 });
-                document.querySelector(paramsObject.selectorToInsert).innerHTML = tmpl(paramsObject.templateSelector, {data: response});
+                paramsObject.callback(response);
             },
             true // this parameter required
         );
